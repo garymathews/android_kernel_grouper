@@ -3638,14 +3638,14 @@ static struct clk tegra_pll_x = {
 	.ops       = &tegra_pll_ops,
 	.reg       = 0xe0,
 	.parent    = &tegra_pll_ref,
-	.max_rate  = 1900000000,
+	.max_rate  = 1700000000,
 	.u.pll = {
 		.input_min = 2000000,
 		.input_max = 31000000,
 		.cf_min    = 1000000,
 		.cf_max    = 6000000,
 		.vco_min   = 20000000,
-		.vco_max   = 1900000000,
+		.vco_max   = 1700000000,
 		.freq_table = tegra_pll_x_freq_table,
 		.lock_delay = 300,
 	},
@@ -3656,7 +3656,7 @@ static struct clk tegra_pll_x_out0 = {
 	.ops       = &tegra_pll_div_ops,
 	.flags     = DIV_2 | PLLX,
 	.parent    = &tegra_pll_x,
-	.max_rate  = 950000000,
+	.max_rate  = 850000000,
 };
 
 
