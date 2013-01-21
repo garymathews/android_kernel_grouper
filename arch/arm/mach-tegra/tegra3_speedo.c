@@ -245,9 +245,10 @@ static void rev_sku_to_speedo_ids(int rev, int sku)
 				orig_cpu_speedo_id = 7;
 				orig_soc_speedo_id = 1;
 #endif
-				cpu_speedo_id = 4;
+				/* Force SOC IDs */
+				cpu_speedo_id = 7;
 				soc_speedo_id = 1;
-				threshold_index = 7;
+				threshold_index = 10;
 				break;
 			case 2: /* DSC => T30S */
 				cpu_speedo_id = 3;
