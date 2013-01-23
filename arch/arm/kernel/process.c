@@ -265,6 +265,7 @@ __setup("reboot=", reboot_setup);
 
 void machine_shutdown(void)
 {
+	disable_nonboot_cpus();
 #ifdef CONFIG_SMP
 	smp_send_stop();
 #endif
