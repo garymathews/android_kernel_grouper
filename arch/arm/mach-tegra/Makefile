@@ -207,6 +207,8 @@ obj-${CONFIG_MACH_GROUPER}              += board-grouper-power-ti.o
 obj-${CONFIG_MACH_GROUPER}              += board-grouper-sdhci.o
 obj-${CONFIG_MACH_GROUPER}              += board-grouper-sensors.o
 
+obj-$(CONFIG_FORCE_FAST_CHARGE)		+= fastchg.o
+
 obj-${CONFIG_TEGRA_BB_XMM_POWER}        += baseband-xmm-power.o
 obj-${CONFIG_TEGRA_BB_XMM_POWER2}       += baseband-xmm-power2.o
 
