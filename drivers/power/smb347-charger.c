@@ -41,8 +41,6 @@
 #include <mach/board-grouper-misc.h>
 #include "../../arch/arm/mach-tegra/gpio-names.h"
 
-#include <linux/fastchg.h>
-
 #define smb347_CHARGE		0x00
 #define smb347_CHRG_CRNTS	0x01
 #define smb347_VRS_FUNC		0x02
@@ -938,45 +936,17 @@ static int cable_type_detect(void)
 						printk(KERN_INFO "Cable: OTHER\n");
 					} else if (retval == APSD_SDP) {
 						printk(KERN_INFO "Cable: SDP\n");
-#if CONFIG_FORCE_FAST_CHARGE
-						if (force_fast_charge != 0) {
-//							smb347_set_InputCurrentlimit(client, 1800);
-							charger->cur_cable_type = ac_cable;
-							success = battery_callback(ac_cable);
-#ifdef TOUCH_CALLBACK_ENABLED
-	                                 	   touch_callback(usb_cable);
-#endif
-						} else {
-							charger->cur_cable_type = usb_cable;
-							success = battery_callback(usb_cable);
-#ifdef TOUCH_CALLBACK_ENABLED
-	                                 	   touch_callback(usb_cable);
-#endif
-						}
-#else
 						charger->cur_cable_type = usb_cable;
 						success = battery_callback(usb_cable);
 #ifdef TOUCH_CALLBACK_ENABLED
 	                                    touch_callback(usb_cable);
 #endif
-#endif
 					} else {
 						charger->cur_cable_type = unknow_cable;
 						printk(KERN_INFO "Unkown Plug In Cable type !\n");
 						if (gpio_get_value(dock_in)) {
-#if CONFIG_FORCE_FAST_CHARGE
-							if (force_fast_charge != 0) {
-//								smb347_set_InputCurrentlimit(client, 1800);
-								charger->cur_cable_type = ac_cable;
-								success = battery_callback(ac_cable);
-							} else {
-								charger->cur_cable_type = usb_cable;
-								success = battery_callback(usb_cable);
-							}
-#else
-						charger->cur_cable_type = usb_cable;
-						success = battery_callback(usb_cable);
-#endif
+							charger->cur_cable_type = usb_cable;
+							success = battery_callback(usb_cable);
 						}
 					}
 				} else {
