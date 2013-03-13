@@ -47,7 +47,7 @@ unsigned int min_cpus_lock;
 
 #define DEF_FREQUENCY_DOWN_DIFFERENTIAL		(5)
 #define DEF_FREQUENCY_UP_THRESHOLD		(98)
-#define DEF_SAMPLING_DOWN_FACTOR		(2)
+#define DEF_SAMPLING_DOWN_FACTOR		(4)
 #define MAX_SAMPLING_DOWN_FACTOR		(100000)
 #define MICRO_FREQUENCY_DOWN_DIFFERENTIAL	(5)
 #define MICRO_FREQUENCY_UP_THRESHOLD		(98)
@@ -375,7 +375,7 @@ static ssize_t store_touch_factor(struct kobject *a, struct attribute *b,
 	return count;
 }
 
-static unsigned int Touch_poke_attr[4] = {1200000, 1000000, 0, 0};
+static unsigned int Touch_poke_attr[4] = {1100000, 1000000, 0, 0};
 static unsigned int Touch_poke_boost = 1;
 static unsigned long Touch_poke_boost_till_jiffies = 0;
 
