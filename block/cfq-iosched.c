@@ -21,18 +21,28 @@
  */
 /* max queue in one round of service */
 static const int cfq_quantum = 8;
-static const int cfq_fifo_expire[2] = { HZ / 4, HZ / 8 };
+//static const int cfq_fifo_expire[2] = { HZ / 4, HZ / 8 };
+static const int cfq_fifo_expire[2] = { 250, 125 };
 /* maximum backwards seek, in KiB */
-static const int cfq_back_max = 16 * 1024;
+//static const int cfq_back_max = 16 * 1024;
+// half of device storage for SSDs, assuming 32GB.
+static const int cfq_back_max = 16384 * 1024;
 /* penalty of a backwards seek */
-static const int cfq_back_penalty = 2;
-static const int cfq_slice_sync = HZ / 10;
-static int cfq_slice_async = HZ / 25;
+//static const int cfq_back_penalty = 2;
+static const int cfq_back_penalty = 1;
+//static const int cfq_slice_sync = HZ / 10;
+static const int cfq_slice_sync = 90;
+//static int cfq_slice_async = HZ / 25;
+static int cfq_slice_async = 35;
 static const int cfq_slice_async_rq = 2;
-static int cfq_slice_idle = HZ / 125;
-static int cfq_group_idle = HZ / 125;
+//static int cfq_slice_idle = HZ / 125;
+static int cfq_slice_idle = 0;
+//static int cfq_group_idle = HZ / 125;
+static int cfq_group_idle = 0;
+// not used with low latency, enabled by default
 static const int cfq_target_latency = HZ * 3/10; /* 300 ms */
-static const int cfq_hist_divisor = 4;
+//static const int cfq_hist_divisor = 4;
+static const int cfq_hist_divisor = 1;
 
 /*
  * offset from end of service tree
@@ -4169,14 +4179,14 @@ static ssize_t __FUNC(struct elevator_queue *e, char *page)		\
 	return cfq_var_show(__data, (page));				\
 }
 SHOW_FUNCTION(cfq_quantum_show, cfqd->cfq_quantum, 0);
-SHOW_FUNCTION(cfq_fifo_expire_sync_show, cfqd->cfq_fifo_expire[1], 1);
-SHOW_FUNCTION(cfq_fifo_expire_async_show, cfqd->cfq_fifo_expire[0], 1);
+SHOW_FUNCTION(cfq_fifo_expire_sync_show, cfqd->cfq_fifo_expire[1], 0);
+SHOW_FUNCTION(cfq_fifo_expire_async_show, cfqd->cfq_fifo_expire[0], 0);
 SHOW_FUNCTION(cfq_back_seek_max_show, cfqd->cfq_back_max, 0);
 SHOW_FUNCTION(cfq_back_seek_penalty_show, cfqd->cfq_back_penalty, 0);
-SHOW_FUNCTION(cfq_slice_idle_show, cfqd->cfq_slice_idle, 1);
-SHOW_FUNCTION(cfq_group_idle_show, cfqd->cfq_group_idle, 1);
-SHOW_FUNCTION(cfq_slice_sync_show, cfqd->cfq_slice[1], 1);
-SHOW_FUNCTION(cfq_slice_async_show, cfqd->cfq_slice[0], 1);
+SHOW_FUNCTION(cfq_slice_idle_show, cfqd->cfq_slice_idle, 0);
+SHOW_FUNCTION(cfq_group_idle_show, cfqd->cfq_group_idle, 0);
+SHOW_FUNCTION(cfq_slice_sync_show, cfqd->cfq_slice[1], 0);
+SHOW_FUNCTION(cfq_slice_async_show, cfqd->cfq_slice[0], 0);
 SHOW_FUNCTION(cfq_slice_async_rq_show, cfqd->cfq_slice_async_rq, 0);
 SHOW_FUNCTION(cfq_low_latency_show, cfqd->cfq_latency, 0);
 #undef SHOW_FUNCTION
@@ -4278,7 +4288,8 @@ static int __init cfq_init(void)
 	if (!cfq_slice_async)
 		cfq_slice_async = 1;
 	if (!cfq_slice_idle)
-		cfq_slice_idle = 1;
+//		cfq_slice_idle = 1;
+		cfq_slice_idle = 0;
 
 #ifdef CONFIG_CFQ_GROUP_IOSCHED
 	if (!cfq_group_idle)
