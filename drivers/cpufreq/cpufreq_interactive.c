@@ -696,7 +696,6 @@ static void cpufreq_interactive_lock_cores(void)
 		goto arm_timer;
 	}
 
-
 	ncpus = num_online_cpus();
 
 	if (core_lock.core_lock_count) {
